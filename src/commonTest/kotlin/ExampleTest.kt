@@ -1,11 +1,8 @@
 package net.lsafer.i18ner.test
 
-import net.lsafer.i18ner.I18ner
-import net.lsafer.i18ner.LanguageRange
+import net.lsafer.i18ner.*
 import net.lsafer.i18ner.TranslationGender.FEMALE
 import net.lsafer.i18ner.TranslationGender.MALE
-import net.lsafer.i18ner.i18nerSource
-import net.lsafer.i18ner.t
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -44,5 +41,64 @@ class ExampleTest {
         }
 
         assertEquals("AR SA F Fatima", AR_SA_F_FATIMA)
+    }
+
+    @Test
+    @JsName("_53357355")
+    fun `implicit and explicit multiline parsing`() {
+        val messages = i18nerSource {
+            //language=dotenv
+            source = """
+                WELCOME_IMPLICIT_2='This is an example of an implicit
+                multiline message definition with two lines'
+                WELCOME_IMPLICIT_3='This is an example of an implicit
+                multiline message definition with
+                three lines'
+                WELCOME_EXPLICIT_2='This is an example of an explicit\
+                multiline message definition with two lines'
+                WELCOME_EXPLICIT_3='This is an example of an explicit\
+                multiline message definition with
+                three lines'
+            """.trimIndent()
+        }
+
+        val expectedMessages = setOf(
+            TranslationMessage(
+                name = "WELCOME_IMPLICIT_2",
+                template = BasicTranslationTemplate(
+                    id = "WELCOME_IMPLICIT_2",
+                    source = "This is an example of an implicit\n" +
+                            "multiline message definition with two lines"
+                )
+            ),
+            TranslationMessage(
+                name = "WELCOME_IMPLICIT_3",
+                template = BasicTranslationTemplate(
+                    id = "WELCOME_IMPLICIT_3",
+                    source = "This is an example of an implicit\n" +
+                            "multiline message definition with\n" +
+                            "three lines"
+                )
+            ),
+            TranslationMessage(
+                name = "WELCOME_EXPLICIT_2",
+                template = BasicTranslationTemplate(
+                    id = "WELCOME_EXPLICIT_2",
+                    source = "This is an example of an explicit\n" +
+                            "multiline message definition with two lines"
+                )
+            ),
+            TranslationMessage(
+                name = "WELCOME_EXPLICIT_3",
+                template = BasicTranslationTemplate(
+                    id = "WELCOME_EXPLICIT_3",
+                    source = "This is an example of an explicit\n" +
+                            "multiline message definition with\n" +
+                            "three lines"
+                )
+            ),
+        )
+
+        assertEquals(expectedMessages, messages.toSet())
     }
 }

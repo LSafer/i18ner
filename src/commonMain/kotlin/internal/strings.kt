@@ -72,6 +72,10 @@ internal fun String.unescapeBackslashEscapes(vararg chars: Char): String {
         }
     }
 
+    // add last '\' if the string ends with '\'
+    if (isEscaping)
+        foundEscapes += lastIndex
+
     if (foundEscapes.isEmpty())
         return this
 
@@ -91,7 +95,9 @@ internal fun String.unescapeBackslashEscapes(vararg chars: Char): String {
         lastEscape = currentEscape
     }
 
-    out.append(this, lastEscape + 1, length)
+    // true when the string is ending with '\'
+    if (lastEscape < length)
+        out.append(this, lastEscape + 1, length)
 
     return out.toString()
 }
