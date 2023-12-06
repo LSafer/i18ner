@@ -25,7 +25,7 @@ fun I18ner.tn(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
 ): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+    return tnObjects(specifier, parameters)?.joinToString("")
 }
 
 /**
@@ -36,7 +36,7 @@ fun tn(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
 ): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+    return tnObjects(specifier, parameters)?.joinToString("")
 }
 
 // I18ner.tn(name, parameters{}, block)
@@ -50,7 +50,7 @@ fun I18ner.tn(
     parameters: Map<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+    return tnObjects(name, parameters, block)?.joinToString("")
 }
 
 /**
@@ -62,7 +62,7 @@ fun tn(
     parameters: Map<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+    return tnObjects(name, parameters, block)?.joinToString("")
 }
 
 // I18ner.tn(name, parameters[], block)
@@ -76,7 +76,7 @@ fun I18ner.tn(
     parameters: List<Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+    return tnObjects(name, parameters, block)?.joinToString("")
 }
 
 /**
@@ -88,7 +88,7 @@ fun tn(
     parameters: List<Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+    return tnObjects(name, parameters, block)?.joinToString("")
 }
 
 // I18ner.tn(name, block)
@@ -101,7 +101,7 @@ fun I18ner.tn(
     name: String,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, block)?.joinToString()
+    return tnObjects(name, block)?.joinToString("")
 }
 
 /**
@@ -112,7 +112,7 @@ fun tn(
     name: String,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, block)?.joinToString()
+    return tnObjects(name, block)?.joinToString("")
 }
 
 // I18ner.tn(name, ...parameters{}, block)
@@ -126,7 +126,7 @@ fun I18ner.tn(
     vararg parameters: Pair<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+    return tnObjects(name, *parameters, block = block)?.joinToString("")
 }
 
 /**
@@ -138,7 +138,7 @@ fun tn(
     vararg parameters: Pair<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+    return tnObjects(name, *parameters, block = block)?.joinToString("")
 }
 
 // I18ner.tn(name, ...parameters[], block)
@@ -152,7 +152,7 @@ fun I18ner.tn(
     vararg parameters: Any?,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+    return tnObjects(name, *parameters, block = block)?.joinToString("")
 }
 
 /**
@@ -164,5 +164,5 @@ fun tn(
     vararg parameters: Any?,
     block: (MutableTranslationSpecifier).() -> Unit = {},
 ): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+    return tnObjects(name, *parameters, block = block)?.joinToString("")
 }
