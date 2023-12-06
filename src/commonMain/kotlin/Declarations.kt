@@ -15,10 +15,13 @@
  */
 package net.lsafer.i18ner
 
+import kotlinx.serialization.Serializable
+
 /**
  * A language range is an identifier which is used to
  * select language tag(s) meeting specific requirements.
  */
+@Serializable
 data class LanguageRange(
     val language: String,
     val weight: Double = 1.0,
@@ -44,6 +47,7 @@ fun interface TranslationTemplate {
  * produce the best matching translation message
  * based on gender.
  */
+@Serializable
 enum class TranslationGender {
     MALE, FEMALE
 }
@@ -76,6 +80,7 @@ data class TranslationMessage(
  * @param gender the gender the target message is for.
  * @param attributes preferred attributes of the target message.
  */
+@Serializable
 data class TranslationSpecifier(
     val name: String,
     val languages: List<LanguageRange> = emptyList(),
@@ -93,6 +98,7 @@ data class TranslationSpecifier(
  * @param gender the gender the target message is for.
  * @param attributes preferred attributes of the target message.
  */
+@Serializable
 data class MutableTranslationSpecifier(
     var name: String,
     val languages: MutableList<LanguageRange>,

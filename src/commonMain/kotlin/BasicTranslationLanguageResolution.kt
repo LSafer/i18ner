@@ -15,6 +15,9 @@
  */
 package net.lsafer.i18ner
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * A basic implementation of [TranslationLanguageResolution].
  *
@@ -23,6 +26,8 @@ package net.lsafer.i18ner
  * @author LSafer
  * @since 1.0.0
  */
+@Serializable
+@SerialName("basic")
 data object BasicTranslationLanguageResolution : TranslationLanguageResolution {
     override fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String? {
         if (ranges.isEmpty() || languages.isEmpty())

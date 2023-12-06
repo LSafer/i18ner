@@ -15,6 +15,9 @@
  */
 package net.lsafer.i18ner
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * A basic implementation of [TranslationTemplate].
  *
@@ -23,6 +26,8 @@ package net.lsafer.i18ner
  * @author LSafer
  * @since 1.0.0
  */
+@Serializable
+@SerialName("basic")
 data class BasicTranslationTemplate(val id: String, val source: String) : TranslationTemplate {
     override fun invoke(parameters: Map<String, Any?>): String {
         return buildString {
