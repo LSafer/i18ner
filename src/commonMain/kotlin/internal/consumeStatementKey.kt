@@ -13,6 +13,30 @@ internal interface StatementKeyConsumer {
 }
 
 internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
+    fun consumeName(offset: Int, terminal: Int) {
+        val name = substring(offset, terminal).trim()
+        consumer.onStatementKeyName(name)
+    }
+
+    fun consumeTag(offset: Int, terminal: Int) {
+        val name = substring(offset + 1, terminal).trim()
+        consumer.onStatementKeyTag(name)
+    }
+
+    fun consumeMetadata(offset: Int, terminal: Int) {
+        val metadata = substring(offset + 1, terminal)
+            .splitToSequence(',')
+            .filter { it.isNotBlank() }
+            .map { it.split('-', limit = 2) }
+            .associate { splits ->
+                val k = splits[0].trim()
+                val v = splits.getOrNull(1)
+                k to v
+            }
+
+        consumer.onStatementKeyMetadata(metadata)
+    }
+
     var nameConsumed = false
     var tagOffset = -1
     var tagConsumed = false
@@ -20,52 +44,42 @@ internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
     var metadataConsumed = false
 
     for ((i, char) in this.withIndex()) {
-        fun tryConsumeName() {
-            if (!nameConsumed) {
-                nameConsumed = true
-                val name = substring(0, i).trim()
-                consumer.onStatementKeyName(name)
-            }
-        }
-
-        fun tryConsumeTag() {
-            if (!tagConsumed && tagOffset != -1) {
-                tagConsumed = true
-                val tag = substring(tagOffset + 1, i).trim()
-                consumer.onStatementKeyTag(tag)
-            }
-        }
-
         when {
             metadataOffset != -1 && !metadataConsumed -> {
                 if (char == ']') {
                     metadataConsumed = true
-                    val metadata = substring(metadataOffset + 1, i)
-                        .splitToSequence(',')
-                        .filter { it.isNotBlank() }
-                        .map { it.split('-', limit = 2) }
-                        .associate { splits ->
-                            val k = splits[0].trim()
-                            val v = splits.getOrNull(1)
-                            k to v
-                        }
-                    consumer.onStatementKeyMetadata(metadata)
+                    consumeMetadata(metadataOffset, i)
                 }
             }
 
             tagOffset == -1 && char == '#' -> {
                 tagOffset = i
-                tryConsumeName()
+
+                if (!nameConsumed) {
+                    nameConsumed = true
+                    consumeName(0, i)
+                }
             }
 
             metadataOffset == -1 && char == '[' -> {
                 metadataOffset = i
-                tryConsumeName()
-                tryConsumeTag()
+
+                if (!nameConsumed) {
+                    nameConsumed = true
+                    consumeName(0, i)
+                }
+                if (!tagConsumed && tagOffset != -1) {
+                    tagConsumed = true
+                    consumeTag(tagOffset, i)
+                }
             }
         }
     }
 
-    if (metadataOffset != -1 != metadataConsumed)
+    if (!nameConsumed)
+        consumeName(0, length)
+    if (!tagConsumed && tagOffset != -1)
+        consumeTag(tagOffset, length)
+    if (!metadataConsumed && metadataOffset != -1)
         consumer.onStatementKeyUnclosedMetadataObject()
 }
