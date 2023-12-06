@@ -1,6 +1,7 @@
 plugins {
     `maven-publish`
     kotlin("multiplatform") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 group = "net.lsafer"
@@ -31,6 +32,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
             }
         }
         commonTest {
