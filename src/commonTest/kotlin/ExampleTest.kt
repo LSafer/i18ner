@@ -1,8 +1,11 @@
 package net.lsafer.i18ner.test
 
-import net.lsafer.i18ner.*
+import net.lsafer.i18ner.I18ner
+import net.lsafer.i18ner.LanguageRange
 import net.lsafer.i18ner.TranslationGender.FEMALE
 import net.lsafer.i18ner.TranslationGender.MALE
+import net.lsafer.i18ner.i18nerSource
+import net.lsafer.i18ner.t
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,14 +32,14 @@ class ExampleTest {
         println(i18ner.messages.toString())
 
         val AR_SA_M_OSAMA = i18ner.t("welcome", "name" to "Osama") {
-            language = "ar-SA"
+            languages += LanguageRange("ar-SA")
             gender = MALE
         }
 
         assertEquals("AR SA M Osama", AR_SA_M_OSAMA)
 
         val AR_SA_F_FATIMA = i18ner.t("welcome", "name" to "Fatima") {
-            language = "ar-SA"
+            languages += LanguageRange("ar-SA")
             gender = FEMALE
         }
 

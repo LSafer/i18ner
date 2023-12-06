@@ -19,8 +19,7 @@ internal class I18nerImpl : I18ner {
         }
     }
 
-    override var defaultLanguage: String? =
-        null
+    override var defaultLanguages = mutableListOf<LanguageRange>()
 
     override var languageResolution: TranslationLanguageResolution =
         BasicTranslationLanguageResolution
@@ -36,14 +35,21 @@ internal class I18nerImpl : I18ner {
         if (choices.isEmpty())
             return null
 
-        val choice = languageResolution(
+        val choicesLanguages = choices.keys.filterNotNullTo(mutableSetOf())
+
+        var choice = languageResolution(
             ranges = specifier.languages,
-            languages = choices.keys.filterNotNullTo(mutableSetOf())
+            languages = choicesLanguages
         )
 
-        val filtered = choices[choice]
-            ?: choices[defaultLanguage]
-            ?: choices.values.first()
+        if (choice == null) {
+            choice = languageResolution(
+                ranges = defaultLanguages,
+                languages = choicesLanguages
+            )
+        }
+
+        val filtered = choices[choice] ?: choices.values.first()
 
         return filtered.maxBy {
             var score = 0

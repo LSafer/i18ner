@@ -38,9 +38,9 @@ interface I18ner {
     val messages: Iterable<TranslationMessage>
 
     /**
-     * The default (fallback) language.
+     * The default (fallback) languages.
      */
-    var defaultLanguage: String?
+    val defaultLanguages: MutableList<LanguageRange>
 
     /**
      * The language resolution algorithm to be used.

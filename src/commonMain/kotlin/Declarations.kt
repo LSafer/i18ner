@@ -100,19 +100,3 @@ data class MutableTranslationSpecifier(
     var gender: TranslationGender?,
     val attributes: MutableMap<String, String>,
 )
-
-/**
- * Helper variable for accessing the first element
- * of [MutableTranslationSpecifier.languages].
- *
- * Attempting to assign `null` will result to all the
- * elements of [MutableTranslationSpecifier.languages]
- * being removed.
- */
-var MutableTranslationSpecifier.language: String?
-    get() = languages.first().language
-    set(value) = when {
-        value == null -> languages.clear()
-        languages.isEmpty() -> languages += LanguageRange(value)
-        else -> languages[0] = LanguageRange(value)
-    }

@@ -25,7 +25,8 @@ my_message_name_3=Oops, {first_person} just called {second_person} by mistake!
 
 ```kotlin
 val i18ner = I18ner() // or use the companion object I18ner 
-i18ner.defaultLanguage = "ar-SA" // optional
+i18ner.defaultLanguages += LanguageRange("ar-SA") // optional
+i18ner.defaultLanguages += LanguageRange("en-US") // optional
 i18ner.languageResolution = BasicTranslationLanguageResolution // optional
 i18ner += i18nerSource {
     defaultLanguage = "ar-SA" // optional
@@ -40,18 +41,18 @@ val i18ner = I18ner() // or use the companion object I18ner
 
 // using named parameters
 i18ner.t("welcome", "name" to "Osama", "age" to 25) {
+    // all optional
     languages += LanguageRange("ar-SA")
     languages += LanguageRange("en-US")
-    language = "ar-SA" // alternative to languages
     count = 1
     gender = TranslationGender.MALE
     attributes["my_attr"] = "my_attr_val"
 }
 // using positional parameters
 i18ner.t("welcome", "Osama", "age") {
+    // all optional
     languages += LanguageRange("ar-SA")
     languages += LanguageRange("en-US")
-    language = "ar-SA" // alternative to languages
     count = 1
     gender = TranslationGender.MALE
     attributes["my_attr"] = "my_attr_val"
