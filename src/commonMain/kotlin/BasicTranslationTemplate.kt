@@ -53,7 +53,7 @@ data class BasicTranslationTemplate(val id: String, val source: String) : Transl
                 val parameterQuery = source.substring(openBraceIndex + 1, closeBraceIndex)
                 val parameter = parameters[parameterQuery]
 
-                require(parameter != null) {
+                require(parameter != null && parameterQuery !in parameters) {
                     "Injection parameter {$parameterQuery} not provided at `${id}`"
                 }
 
