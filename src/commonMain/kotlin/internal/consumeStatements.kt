@@ -230,6 +230,7 @@ internal fun createStatementConsumer(
             )
 
             onStatement(statement)
+            onStatementIgnore()
         }
 
         override fun onStatementIgnore() {
