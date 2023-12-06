@@ -39,7 +39,7 @@ fun interface TranslationLanguageResolution {
  * A function that produces a localized string from some parameters.
  */
 fun interface TranslationTemplate {
-    operator fun invoke(parameters: Map<String, Any?>): String
+    operator fun invoke(parameters: Map<String, Any?>): List<Any?>
 }
 
 /**

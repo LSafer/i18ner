@@ -29,8 +29,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("basic")
 data class BasicTranslationTemplate(val id: String, val source: String) : TranslationTemplate {
-    override fun invoke(parameters: Map<String, Any?>): String {
-        return buildString {
+    override fun invoke(parameters: Map<String, Any?>): List<Any?> {
+        return buildList {
             var previousBraceIndex = 0
 
             while (true) {
@@ -57,13 +57,13 @@ data class BasicTranslationTemplate(val id: String, val source: String) : Transl
                     "Injection parameter {$parameterQuery} not provided at `${id}`"
                 }
 
-                append(source, previousBraceIndex, openBraceIndex)
-                append(parameter)
+                add(source.substring(previousBraceIndex, openBraceIndex))
+                add(parameter)
 
                 previousBraceIndex = closeBraceIndex + 1
             }
 
-            append(source, previousBraceIndex, source.length)
+            add(source.substring(previousBraceIndex))
         }
     }
 }

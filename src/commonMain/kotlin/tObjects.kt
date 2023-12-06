@@ -15,154 +15,168 @@
  */
 package net.lsafer.i18ner
 
-// I18ner.tn(specifier, parameters{})
+// I18ner.tObjects(specifier, parameters{}, default)
 
 /**
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tObjects(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+    default: List<Any?> = listOf(specifier.name),
+): List<Any?> {
+    return tnObjects(specifier, parameters) ?: default
 }
 
 /**
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun tn(
+fun tObjects(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+    default: List<Any?> = listOf(specifier.name),
+): List<Any?> {
+    return tnObjects(specifier, parameters) ?: default
 }
 
-// I18ner.tn(name, parameters{}, block)
+// I18ner.tObjects(name, parameters{}, default, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tObjects(
     name: String,
     parameters: Map<String, Any?>,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, parameters, block) ?: default
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tObjects(
     name: String,
     parameters: Map<String, Any?>,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, parameters, block) ?: default
 }
 
-// I18ner.tn(name, parameters[], block)
+// I18ner.tObjects(name, parameters[], default, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tObjects(
     name: String,
     parameters: List<Any?>,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, parameters, block) ?: default
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tObjects(
     name: String,
     parameters: List<Any?>,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, parameters, block) ?: default
 }
 
-// I18ner.tn(name, block)
+// I18ner.tObjects(name,, default, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tObjects(
     name: String,
+    dummy: Unit = Unit,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, block) ?: default
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tObjects(
     name: String,
+    dummy: Unit = Unit,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, block) ?: default
 }
 
-// I18ner.tn(name, ...parameters{}, block)
+// I18ner.tObjects(name, ...parameters{}, default, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
-    name: String,
-    vararg parameters: Pair<String, Any?>,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
-}
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun tn(
+fun I18ner.tObjects(
     name: String,
     vararg parameters: Pair<String, Any?>,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
-}
-
-// I18ner.tn(name, ...parameters[], block)
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun I18ner.tn(
-    name: String,
-    vararg parameters: Any?,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, *parameters, block = block) ?: default
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tObjects(
+    name: String,
+    vararg parameters: Pair<String, Any?>,
+    default: List<Any?> = listOf(name),
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): List<Any?> {
+    return tnObjects(name, *parameters, block = block) ?: default
+}
+
+// I18ner.tObjects(name, ...parameters[], default, block)
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun I18ner.tObjects(
     name: String,
     vararg parameters: Any?,
+    default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+): List<Any?> {
+    return tnObjects(name, *parameters, block = block) ?: default
+}
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun tObjects(
+    name: String,
+    vararg parameters: Any?,
+    default: List<Any?> = listOf(name),
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): List<Any?> {
+    return tnObjects(name, *parameters, block = block) ?: default
 }

@@ -21,148 +21,173 @@ package net.lsafer.i18ner
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tnObjects(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+): List<Any?>? {
+    val message = this[specifier] ?: return null
+
+    return message.template(parameters)
 }
 
 /**
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun tn(
+fun tnObjects(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-): String? {
-    return tnObjects(specifier, parameters)?.joinToString()
+): List<Any?>? {
+    return I18ner.tnObjects(specifier, parameters)
 }
 
-// I18ner.tn(name, parameters{}, block)
+// I18ner.tnObjects(name, parameters{}, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tnObjects(
     name: String,
     parameters: Map<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?>? {
+    val builder = MutableTranslationSpecifier(
+        name = name,
+        languages = mutableListOf(),
+        count = null,
+        gender = null,
+        attributes = mutableMapOf()
+    )
+
+    builder.apply(block)
+
+    val specifier = TranslationSpecifier(
+        name = builder.name,
+        languages = builder.languages,
+        count = builder.count,
+        gender = builder.gender,
+        attributes = builder.attributes
+    )
+
+    return tnObjects(specifier, parameters)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tnObjects(
     name: String,
     parameters: Map<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?>? {
+    return I18ner.tnObjects(name, parameters, block)
 }
 
-// I18ner.tn(name, parameters[], block)
+// I18ner.tnObjects(name, parameters[], block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tnObjects(
     name: String,
     parameters: List<Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?>? {
+    val parametersMap = parameters
+        .asSequence()
+        .mapIndexed { i, v -> "$i" to v }
+        .toMap()
+
+    return tnObjects(name, parametersMap, block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tnObjects(
     name: String,
     parameters: List<Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, parameters, block)?.joinToString()
+): List<Any?>? {
+    return I18ner.tnObjects(name, parameters, block)
 }
 
-// I18ner.tn(name, block)
+// I18ner.tnObjects(name, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
+fun I18ner.tnObjects(
     name: String,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, block)?.joinToString()
+): List<Any?>? {
+    return tnObjects(name, emptyMap(), block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tnObjects(
     name: String,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, block)?.joinToString()
+): List<Any?>? {
+    return I18ner.tnObjects(name, block)
 }
 
-// I18ner.tn(name, ...parameters{}, block)
+// I18ner.tnObjects(name, ...parameters{}, block)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.tn(
-    name: String,
-    vararg parameters: Pair<String, Any?>,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
-}
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun tn(
+fun I18ner.tnObjects(
     name: String,
     vararg parameters: Pair<String, Any?>,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
-}
-
-// I18ner.tn(name, ...parameters[], block)
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun I18ner.tn(
-    name: String,
-    vararg parameters: Any?,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+): List<Any?>? {
+    return tnObjects(name, parameters.toMap(), block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun tn(
+fun tnObjects(
+    name: String,
+    vararg parameters: Pair<String, Any?>,
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): List<Any?>? {
+    return I18ner.tnObjects(name, *parameters, block = block)
+}
+
+// I18ner.tnObjects(name, ...parameters[], block)
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun I18ner.tnObjects(
     name: String,
     vararg parameters: Any?,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String? {
-    return tnObjects(name, *parameters, block = block)?.joinToString()
+): List<Any?>? {
+    return tnObjects(name, parameters.asList(), block)
+}
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun tnObjects(
+    name: String,
+    vararg parameters: Any?,
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): List<Any?>? {
+    return I18ner.tnObjects(name, *parameters, block = block)
 }

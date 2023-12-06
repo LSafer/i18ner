@@ -15,7 +15,7 @@
  */
 package net.lsafer.i18ner
 
-// I18ner.t(TranslationSpecifier, Map, String)
+// I18ner.t(specifier, parameters{}, default)
 
 /**
  * Return the translation for the given [specifier]
@@ -41,7 +41,7 @@ fun t(
     return tn(specifier, parameters) ?: default
 }
 
-// I18ner.t(String, Map, String, Function)
+// I18ner.t(name, parameters{}, default, block)
 
 /**
  * Return the translation for the given [name]
@@ -69,35 +69,7 @@ fun t(
     return tn(name, parameters, block) ?: default
 }
 
-// I18ner.t(String, String, Function)
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun I18ner.t(
-    name: String,
-    dummy: Unit = Unit,
-    default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, block) ?: default
-}
-
-/**
- * Return the translation for the given [name]
- * with the given arguments.
- */
-fun t(
-    name: String,
-    dummy: Unit = Unit,
-    default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, block) ?: default
-}
-
-// I18ner.t(String, List, String, Function)
+// I18ner.t(name, parameters[], default, block)
 
 /**
  * Return the translation for the given [name]
@@ -125,7 +97,35 @@ fun t(
     return tn(name, parameters, block) ?: default
 }
 
-// I18ner.t(String, ...Pair, String, Function)
+// I18ner.t(name,, default, block)
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun I18ner.t(
+    name: String,
+    dummy: Unit = Unit,
+    default: String = name,
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): String {
+    return tn(name, block) ?: default
+}
+
+/**
+ * Return the translation for the given [name]
+ * with the given arguments.
+ */
+fun t(
+    name: String,
+    dummy: Unit = Unit,
+    default: String = name,
+    block: (MutableTranslationSpecifier).() -> Unit = {},
+): String {
+    return tn(name, block) ?: default
+}
+
+// I18ner.t(name, ...parameters{}, default, block)
 
 /**
  * Return the translation for the given [name]
@@ -153,7 +153,7 @@ fun t(
     return tn(name, *parameters, block = block) ?: default
 }
 
-// I18ner.t(String, ...Any?, String, Function)
+// I18ner.t(name, ...parameters[], default, block)
 
 /**
  * Return the translation for the given [name]
