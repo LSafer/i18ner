@@ -15,168 +15,179 @@
  */
 package net.lsafer.i18ner
 
-// I18ner.t(TranslationSpecifier, Map, String)
+// I18ner.tn(TranslationSpecifier, Map)
 
 /**
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-    default: String = specifier.name,
-): String {
-    return tn(specifier, parameters) ?: default
+): String? {
+    val message = this[specifier] ?: return null
+
+    return message.template(parameters)
 }
 
 /**
  * Return the translation for the given [specifier]
  * with the given arguments.
  */
-fun t(
+fun tn(
     specifier: TranslationSpecifier,
     parameters: Map<String, Any?>,
-    default: String = specifier.name,
-): String {
-    return tn(specifier, parameters) ?: default
+): String? {
+    return I18ner.tn(specifier, parameters)
 }
 
-// I18ner.t(String, Map, String, Function)
+// I18ner.tn(String, Map, Function)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     name: String,
     parameters: Map<String, Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, parameters, block) ?: default
+): String? {
+    val builder = MutableTranslationSpecifier(
+        name = name,
+        languages = mutableListOf(),
+        count = null,
+        gender = null,
+        attributes = mutableMapOf()
+    )
+
+    builder.apply(block)
+
+    val specifier = TranslationSpecifier(
+        name = builder.name,
+        languages = builder.languages,
+        count = builder.count,
+        gender = builder.gender,
+        attributes = builder.attributes
+    )
+
+    return tn(specifier, parameters)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun t(
+fun tn(
     name: String,
     parameters: Map<String, Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, parameters, block) ?: default
+): String? {
+    return I18ner.tn(name, parameters, block)
 }
 
-// I18ner.t(String, String, Function)
+// I18ner.tn(String, Function)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     name: String,
-    dummy: Unit = Unit,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, block) ?: default
+): String? {
+    return tn(name, emptyMap(), block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun t(
+fun tn(
     name: String,
-    dummy: Unit = Unit,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, block) ?: default
+): String? {
+    return I18ner.tn(name, block)
 }
 
-// I18ner.t(String, List, String, Function)
+// I18ner.tn(String, List, Function)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     name: String,
     parameters: List<Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, parameters, block) ?: default
+): String? {
+    val parametersMap = parameters
+        .asSequence()
+        .mapIndexed { i, v -> "$i" to v }
+        .toMap()
+
+    return tn(name, parametersMap, block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun t(
+fun tn(
     name: String,
     parameters: List<Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, parameters, block) ?: default
+): String? {
+    return I18ner.tn(name, parameters, block)
 }
 
-// I18ner.t(String, ...Pair, String, Function)
+// I18ner.tn(String, ...Pair, Function)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     name: String,
     vararg parameters: Pair<String, Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, *parameters, block = block) ?: default
+): String? {
+    return tn(name, parameters.toMap(), block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun t(
+fun tn(
     name: String,
     vararg parameters: Pair<String, Any?>,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, *parameters, block = block) ?: default
+): String? {
+    return I18ner.tn(name, *parameters, block = block)
 }
 
-// I18ner.t(String, ...Any?, String, Function)
+// I18ner.tn(String, ...Any?, Function)
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun I18ner.t(
+fun I18ner.tn(
     name: String,
     vararg parameters: Any?,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, *parameters, block = block) ?: default
+): String? {
+    return tn(name, parameters.asList(), block)
 }
 
 /**
  * Return the translation for the given [name]
  * with the given arguments.
  */
-fun t(
+fun tn(
     name: String,
     vararg parameters: Any?,
-    default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
-): String {
-    return tn(name, *parameters, block = block) ?: default
+): String? {
+    return I18ner.tn(name, *parameters, block = block)
 }
