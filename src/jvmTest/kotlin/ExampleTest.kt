@@ -3,14 +3,12 @@ package net.lsafer.i18ner.test
 import net.lsafer.i18ner.*
 import net.lsafer.i18ner.TranslationGender.FEMALE
 import net.lsafer.i18ner.TranslationGender.MALE
-import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ExampleTest {
     @Suppress("LocalVariableName")
     @Test
-    @JsName("_20628350")
     fun `simple format and resolution test`() {
         val i18ner = I18ner()
 
@@ -25,8 +23,6 @@ class ExampleTest {
                 welcome#en[M]=EN M {name}
             """
         }
-
-        println(i18ner.messages.toString())
 
         val AR_SA_M_OSAMA = i18ner.t("welcome", "name" to "Osama") {
             languages += LanguageRange("ar-SA")
@@ -44,7 +40,6 @@ class ExampleTest {
     }
 
     @Test
-    @JsName("_53357355")
     fun `implicit and explicit multiline parsing`() {
         val messages = i18nerSource {
             //language=dotenv
@@ -65,7 +60,7 @@ class ExampleTest {
         val expectedMessages = setOf(
             TranslationMessage(
                 name = "WELCOME_IMPLICIT_2",
-                template = BasicTranslationTemplate(
+                template = TranslationTemplate(
                     id = "WELCOME_IMPLICIT_2",
                     source = "This is an example of an implicit\n" +
                             "multiline message definition with two lines"
@@ -73,7 +68,7 @@ class ExampleTest {
             ),
             TranslationMessage(
                 name = "WELCOME_IMPLICIT_3",
-                template = BasicTranslationTemplate(
+                template = TranslationTemplate(
                     id = "WELCOME_IMPLICIT_3",
                     source = "This is an example of an implicit\n" +
                             "multiline message definition with\n" +
@@ -82,7 +77,7 @@ class ExampleTest {
             ),
             TranslationMessage(
                 name = "WELCOME_EXPLICIT_2",
-                template = BasicTranslationTemplate(
+                template = TranslationTemplate(
                     id = "WELCOME_EXPLICIT_2",
                     source = "This is an example of an explicit\n" +
                             "multiline message definition with two lines"
@@ -90,7 +85,7 @@ class ExampleTest {
             ),
             TranslationMessage(
                 name = "WELCOME_EXPLICIT_3",
-                template = BasicTranslationTemplate(
+                template = TranslationTemplate(
                     id = "WELCOME_EXPLICIT_3",
                     source = "This is an example of an explicit\n" +
                             "multiline message definition with\n" +

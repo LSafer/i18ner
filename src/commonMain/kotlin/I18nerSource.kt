@@ -21,28 +21,20 @@ import net.lsafer.i18ner.internal.createStatementConsumer
 /**
  * The configuration needed to obtain
  * translation messages from a raw source.
+ *
+ * @param defaultLanguage the language of the message if no language tag where specified.
+ * @param defaultTemplateEngineId the default engine id.
+ * @param source the raw source.
+ * @param strict true, to enable stricter parsing; Some issues might not be reported.
+ * @param filename optional; Helps to track syntax issues.
  */
-class I18nSourceOptions {
-    /**
-     * The language of the message if no language tag where specified.
-     */
-    var defaultLanguage: String? = null
-
-    /**
-     * The raw source.
-     */
-    var source: String = ""
-
-    /**
-     * The source file name. Helps to track syntax issues.
-     */
-    var filename: String? = null
-
-    /**
-     * True to enable stricter parsing. Some issues might not be reported.
-     */
-    var strict: Boolean = false
-}
+data class I18nSourceOptions(
+    var defaultLanguage: String? = null,
+    var defaultTemplateEngineId: String = "basic",
+    var source: String = "",
+    var strict: Boolean = false,
+    var filename: String? = null,
+)
 
 /**
  * Obtain a translation messages list from the
@@ -118,9 +110,10 @@ fun i18nerSource(
             countRange = it.countModifier,
             gender = it.genderModifier,
             attributes = it.attributes ?: emptyMap(),
-            template = BasicTranslationTemplate(
+            template = TranslationTemplate(
                 id = it.key,
-                source = it.template
+                source = it.template,
+                engineId = options.defaultTemplateEngineId
             )
         )
     }

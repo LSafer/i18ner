@@ -15,9 +15,6 @@
  */
 package net.lsafer.i18ner
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
 /**
  * A basic implementation of [TranslationTemplate].
  *
@@ -26,44 +23,42 @@ import kotlinx.serialization.Serializable
  * @author LSafer
  * @since 1.0.0
  */
-@Serializable
-@SerialName("basic")
-data class BasicTranslationTemplate(val id: String, val source: String) : TranslationTemplate {
-    override fun invoke(parameters: Map<String, Any?>): List<Any?> {
+data object BasicTranslationTemplateEngine : TranslationTemplateEngine {
+    override fun invoke(template: TranslationTemplate, parameters: Map<String, Any?>): List<Any?> {
         return buildList {
             var previousBraceIndex = 0
 
             while (true) {
-                val openBraceIndex = source.indexOf('{', previousBraceIndex)
+                val openBraceIndex = template.source.indexOf('{', previousBraceIndex)
 
                 // no more injections
                 if (openBraceIndex == -1)
                     break
 
                 // ignore escapes
-                if (source.getOrNull(openBraceIndex - 1) == '\\')
+                if (template.source.getOrNull(openBraceIndex - 1) == '\\')
                     continue
 
-                val closeBraceIndex = source.indexOf('}', openBraceIndex)
+                val closeBraceIndex = template.source.indexOf('}', openBraceIndex)
 
                 require(closeBraceIndex != -1) {
-                    "Unclosed template injection at `${id}`"
+                    "Unclosed template injection at `${template.id}`"
                 }
 
-                val parameterQuery = source.substring(openBraceIndex + 1, closeBraceIndex)
+                val parameterQuery = template.source.substring(openBraceIndex + 1, closeBraceIndex)
                 val parameter = parameters[parameterQuery]
 
                 require(parameter != null || parameterQuery in parameters) {
-                    "Injection parameter {$parameterQuery} not provided at `${id}`"
+                    "Injection parameter {$parameterQuery} not provided at `${template.id}`"
                 }
 
-                add(source.substring(previousBraceIndex, openBraceIndex))
+                add(template.source.substring(previousBraceIndex, openBraceIndex))
                 add(parameter)
 
                 previousBraceIndex = closeBraceIndex + 1
             }
 
-            add(source.substring(previousBraceIndex))
+            add(template.source.substring(previousBraceIndex))
         }
     }
 }

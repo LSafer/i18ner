@@ -43,7 +43,16 @@ interface I18ner {
     val defaultLanguages: MutableList<LanguageRange>
 
     /**
+     * The templating engines to be used.
+     *
+     * `Default: { "basic": BasicTranslationTemplateEngine }`
+     */
+    val templateEngines: MutableMap<String, TranslationTemplateEngine>
+
+    /**
      * The language resolution algorithm to be used.
+     *
+     * `Default: BasicTranslationLanguageResolution`
      */
     var languageResolution: TranslationLanguageResolution
 

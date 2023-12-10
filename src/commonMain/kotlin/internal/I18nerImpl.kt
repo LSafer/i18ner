@@ -21,6 +21,9 @@ internal class I18nerImpl : I18ner {
 
     override var defaultLanguages = mutableListOf<LanguageRange>()
 
+    override val templateEngines: MutableMap<String, TranslationTemplateEngine> =
+        mutableMapOf("basic" to BasicTranslationTemplateEngine)
+
     override var languageResolution: TranslationLanguageResolution =
         BasicTranslationLanguageResolution
 

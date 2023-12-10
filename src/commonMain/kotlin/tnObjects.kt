@@ -26,8 +26,11 @@ fun I18ner.tnObjects(
     parameters: Map<String, Any?>,
 ): List<Any?>? {
     val message = this[specifier] ?: return null
-
-    return message.template(parameters)
+    val engine = templateEngines[message.template.engineId]
+    require(engine != null) {
+        "No Template Engine was found with id ${message.template.engineId}"
+    }
+    return engine(message.template, parameters)
 }
 
 /**

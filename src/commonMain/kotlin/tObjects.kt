@@ -105,6 +105,7 @@ fun tObjects(
  */
 fun I18ner.tObjects(
     name: String,
+    @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},
@@ -118,6 +119,7 @@ fun I18ner.tObjects(
  */
 fun tObjects(
     name: String,
+    @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: List<Any?> = listOf(name),
     block: (MutableTranslationSpecifier).() -> Unit = {},

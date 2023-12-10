@@ -105,6 +105,7 @@ fun t(
  */
 fun I18ner.t(
     name: String,
+    @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},
@@ -118,6 +119,7 @@ fun I18ner.t(
  */
 fun t(
     name: String,
+    @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: String = name,
     block: (MutableTranslationSpecifier).() -> Unit = {},

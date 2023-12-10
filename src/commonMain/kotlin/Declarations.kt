@@ -15,7 +15,9 @@
  */
 package net.lsafer.i18ner
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import net.lsafer.i18ner.internal.LongRangeArraySerializer
 
 /**
  * A language range is an identifier which is used to
@@ -28,29 +30,28 @@ data class LanguageRange(
 )
 
 /**
- * A function for selecting the best matching language
- * from a set of languages given some language ranges.
- */
-fun interface TranslationLanguageResolution {
-    operator fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String?
-}
-
-/**
- * A function that produces a localized string from some parameters.
- */
-fun interface TranslationTemplate {
-    operator fun invoke(parameters: Map<String, Any?>): List<Any?>
-}
-
-/**
  * Enumeration over the possible genders to help
  * produce the best matching translation message
  * based on gender.
  */
 @Serializable
 enum class TranslationGender {
-    MALE, FEMALE
+    @SerialName("male")
+    MALE,
+
+    @SerialName("female")
+    FEMALE
 }
+
+/**
+ * A function that produces a localized string from some parameters.
+ */
+@Serializable
+data class TranslationTemplate(
+    val id: String,
+    val source: String,
+    val engineId: String = "basic",
+)
 
 /**
  * A class holding the information about some translation message.
@@ -62,9 +63,12 @@ enum class TranslationGender {
  * @param attributes additional attributes assigned for the message.
  * @param template a function to render the message content with parameters.
  */
+@Serializable
 data class TranslationMessage(
     val name: String,
     val language: String? = null,
+    @OptIn(I18nerInternalApi::class)
+    @Serializable(LongRangeArraySerializer::class)
     val countRange: LongRange? = null,
     val gender: TranslationGender? = null,
     val attributes: Map<String, String> = emptyMap(),
@@ -106,3 +110,18 @@ data class MutableTranslationSpecifier(
     var gender: TranslationGender?,
     val attributes: MutableMap<String, String>,
 )
+
+/**
+ * A function for selecting the best matching language
+ * from a set of languages given some language ranges.
+ */
+fun interface TranslationLanguageResolution {
+    operator fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String?
+}
+
+/**
+ * A function that renders templates with parameters.
+ */
+fun interface TranslationTemplateEngine {
+    operator fun invoke(template: TranslationTemplate, parameters: Map<String, Any?>): List<Any?>
+}
