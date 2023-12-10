@@ -4,13 +4,6 @@ plugins {
     kotlin("plugin.serialization") version "1.9.20"
 }
 
-group = "net.lsafer"
-version = "1.0.0-snapshot"
-
-tasks.wrapper {
-    gradleVersion = "8.2.1"
-}
-
 repositories {
     mavenCentral()
 }
@@ -27,12 +20,16 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":"))
+
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("reflect"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
+
+                implementation("net.mamoe.yamlkt:yamlkt:0.13.0")
             }
         }
         commonTest {
@@ -42,7 +39,7 @@ kotlin {
         }
         jsMain {
             dependencies {
-                implementation(project.dependencies.platform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.597"))
+                implementation(platform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.597"))
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-js")
             }
         }

@@ -6,3 +6,5 @@ pluginManagement {
 }
 
 rootProject.name = "i18ner"
+
+include(":i18ner-yaml")
