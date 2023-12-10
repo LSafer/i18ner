@@ -1,17 +1,15 @@
 package net.lsafer.i18ner.internal
 
-import net.lsafer.i18ner.TranslationGender
-
 internal interface StatementConsumer {
     fun onStatementStart(lineNumber: Int, line: String)
-
-    fun onStatementKey(key: String)
-
-    fun onStatementValue(value: String)
 
     fun onStatementFinish()
 
     fun onStatementIgnore()
+
+    fun onStatementKey(key: String)
+
+    fun onStatementTemplate(template: String)
 
     fun onStatementMissingAssignmentOperator()
 
@@ -54,7 +52,7 @@ internal fun Sequence<String>.consumeStatements(consumer: StatementConsumer) {
 
         // handle blank values
         if (value0.isBlank()) {
-            consumer.onStatementValue("")
+            consumer.onStatementTemplate("")
             consumer.onStatementFinish()
             continue@mainLoop
         }
@@ -68,6 +66,7 @@ internal fun Sequence<String>.consumeStatements(consumer: StatementConsumer) {
                 '\'', '\"' -> {
                     quote = c
                     quoteIndex = i
+                    break
                 }
 
                 else -> {
@@ -111,7 +110,7 @@ internal fun Sequence<String>.consumeStatements(consumer: StatementConsumer) {
                     // the literal has ended in this line
                     // treat the remaining as comments
                     value.append(valueN.take(terminal).unescapeBackslashEscapes(quote))
-                    consumer.onStatementValue(value.toString())
+                    consumer.onStatementTemplate(value.toString())
                     consumer.onStatementFinish()
                     continue@mainLoop
                 }
@@ -143,137 +142,7 @@ internal fun Sequence<String>.consumeStatements(consumer: StatementConsumer) {
             }
         }
 
-        consumer.onStatementValue(value0.substring(offset, terminal))
+        consumer.onStatementTemplate(value0.substring(offset, terminal))
         consumer.onStatementFinish()
-    }
-}
-
-data class ConsumedStatement(
-    val key: String,
-    val keyName: String,
-    val keyTag: String?,
-    val keyMetadata: Map<String, String?>?,
-    val keyMetadataGender: TranslationGender?,
-    val keyMetadataCountRange: LongRange?,
-    val keyMetadataAttributes: Map<String, String>?,
-    val value: String,
-)
-
-internal fun createStatementConsumer(
-    filename: String?,
-    strict: Boolean,
-    onStatement: (ConsumedStatement) -> Unit,
-): StatementConsumer {
-    return object : StatementConsumer, StatementKeyConsumer, StatementKeyMetadataConsumer {
-        var currentLine = ""
-        var currentLineNumber = -1
-        var currentValue = ""
-
-        var currentKey = ""
-        var currentKeyName = ""
-        var currentKeyTag: String? = null
-
-        var currentKeyMetadata: Map<String, String?>? = null
-        var currentKeyMetadataGender: TranslationGender? = null
-        var currentKeyMetadataCountRange: LongRange? = null
-        var currentKeyMetadataAttributes: MutableMap<String, String> = mutableMapOf()
-
-        override fun onStatementStart(lineNumber: Int, line: String) {
-            currentLine = line
-            currentLineNumber = lineNumber
-        }
-
-        override fun onStatementKey(key: String) {
-            currentKey = key
-            key.consumeStatementKey(this)
-        }
-
-        override fun onStatementKeyName(name: String) {
-            currentKeyName = name
-        }
-
-        override fun onStatementKeyTag(tag: String) {
-            currentKeyTag = tag
-        }
-
-        override fun onStatementKeyMetadata(metadata: Map<String, String?>) {
-            currentKeyMetadata = metadata
-            metadata.consumeStatementKeyMetadata(this)
-        }
-
-        override fun onStatementKeyMetadataGender(gender: TranslationGender) {
-            currentKeyMetadataGender = gender
-        }
-
-        override fun onStatementKeyMetadataCountRange(count: LongRange) {
-            currentKeyMetadataCountRange = count
-        }
-
-        override fun onStatementKeyMetadataAttribute(name: String, value: String) {
-            currentKeyMetadataAttributes[name] = value
-        }
-
-        override fun onStatementValue(value: String) {
-            currentValue = value
-        }
-
-        override fun onStatementFinish() {
-            val statement = ConsumedStatement(
-                key = currentKey,
-                keyName = currentKeyName,
-                keyTag = currentKeyTag,
-                keyMetadata = currentKeyMetadata,
-                keyMetadataGender = currentKeyMetadataGender,
-                keyMetadataCountRange = currentKeyMetadataCountRange,
-                keyMetadataAttributes = currentKeyMetadataAttributes,
-                value = currentValue
-            )
-
-            onStatement(statement)
-            onStatementIgnore()
-        }
-
-        override fun onStatementIgnore() {
-            currentLine = ""
-            currentLineNumber = -1
-            currentValue = ""
-
-            currentKey = ""
-            currentKeyName = ""
-            currentKeyTag = null
-
-            currentKeyMetadata = null
-            currentKeyMetadataGender = null
-            currentKeyMetadataCountRange = null
-            currentKeyMetadataAttributes = mutableMapOf()
-        }
-
-        override fun onStatementMissingAssignmentOperator() {
-            if (!strict) return
-            val message =
-                "Missing `=` operator for key `$currentKeyName` on ${filename ?: "unknown"} at $currentLineNumber:\n$currentLine"
-            throw IllegalArgumentException(message)
-        }
-
-        override fun onStatementUnclosedValueString() {
-            if (!strict) return
-            val message =
-                "Unclosed value literal for key `$currentKeyName` on ${filename ?: "unknown"} at $currentLineNumber:\n$currentLine"
-            throw IllegalArgumentException(message)
-        }
-
-        override fun onStatementKeyUnclosedMetadataObject() {
-            if (!strict) return
-            val message =
-                "Unclosed metadata object for key `$currentKeyName` on ${filename ?: "unknown"} at $currentLineNumber:\n$currentLine"
-            throw IllegalArgumentException(message)
-        }
-
-        override fun onStatementKeyMetadataInvalidModifier(name: String) {
-            if (!strict) return
-            val message =
-                "Invalid modifier `$name` for key `$currentKeyName` on ${filename ?: "unknown"} at $currentLineNumber:\n$currentLine"
-            throw IllegalArgumentException(message)
-        }
     }
 }

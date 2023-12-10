@@ -1,18 +1,22 @@
 package net.lsafer.i18ner.internal
 
-internal interface StatementKeyConsumer {
+private const val TAG_OPEN = '#'
+private const val METADATA_OPEN = '['
+private const val METADATA_CLOSE = ']'
+private val METADATA_SEPARATOR_CHARS = charArrayOf(',', ' ')
+private val METADATA_ASSIGNMENT_CHARS = charArrayOf('-', '=', ':')
+
+internal interface StatementKeyOnetimeConsumer {
     fun onStatementKeyName(name: String)
 
     fun onStatementKeyTag(tag: String)
 
     fun onStatementKeyMetadata(metadata: Map<String, String?>)
 
-    // errors
-
     fun onStatementKeyUnclosedMetadataObject()
 }
 
-internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
+internal fun String.consumeStatementKey(consumer: StatementKeyOnetimeConsumer) {
     fun consumeName(offset: Int, terminal: Int) {
         val name = substring(offset, terminal).trim()
         consumer.onStatementKeyName(name)
@@ -25,13 +29,13 @@ internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
 
     fun consumeMetadata(offset: Int, terminal: Int) {
         val metadata = substring(offset + 1, terminal)
-            .splitToSequence(',')
+            .splitToSequence(*METADATA_SEPARATOR_CHARS)
             .filter { it.isNotBlank() }
-            .map { it.split('-', limit = 2) }
+            .map { it.split(*METADATA_ASSIGNMENT_CHARS, limit = 2) }
             .associate { splits ->
-                val k = splits[0].trim()
+                val k = splits[0]
                 val v = splits.getOrNull(1)
-                k to v
+                k.trim() to v?.trim()
             }
 
         consumer.onStatementKeyMetadata(metadata)
@@ -46,13 +50,13 @@ internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
     for ((i, char) in this.withIndex()) {
         when {
             metadataOffset != -1 && !metadataConsumed -> {
-                if (char == ']') {
+                if (char == METADATA_CLOSE) {
                     metadataConsumed = true
                     consumeMetadata(metadataOffset, i)
                 }
             }
 
-            tagOffset == -1 && char == '#' -> {
+            tagOffset == -1 && char == TAG_OPEN -> {
                 tagOffset = i
 
                 if (!nameConsumed) {
@@ -61,7 +65,7 @@ internal fun String.consumeStatementKey(consumer: StatementKeyConsumer) {
                 }
             }
 
-            metadataOffset == -1 && char == '[' -> {
+            metadataOffset == -1 && char == METADATA_OPEN -> {
                 metadataOffset = i
 
                 if (!nameConsumed) {

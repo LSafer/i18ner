@@ -32,6 +32,16 @@ class I18nSourceOptions {
      * The raw source.
      */
     var source: String = ""
+
+    /**
+     * The source file name. Helps to track syntax issues.
+     */
+    var filename: String? = null
+
+    /**
+     * True to enable stricter parsing. Some issues might not be reported.
+     */
+    var strict: Boolean = false
 }
 
 /**
@@ -96,19 +106,21 @@ fun i18nerSource(
  * my_message_name_3=Oops, {first_person} just called {second_person} by mistake!
  * ```
  */
-fun i18nerSource(options: I18nSourceOptions): List<TranslationMessage> {
+fun i18nerSource(
+    options: I18nSourceOptions,
+): List<TranslationMessage> {
     val source = options.source
     val output = mutableListOf<TranslationMessage>()
-    val consumer = createStatementConsumer(null, true) {
+    val consumer = createStatementConsumer(options.filename, options.strict) {
         output += TranslationMessage(
-            name = it.keyName,
-            language = it.keyTag ?: options.defaultLanguage,
-            countRange = it.keyMetadataCountRange,
-            gender = it.keyMetadataGender,
-            attributes = it.keyMetadataAttributes ?: emptyMap(),
+            name = it.name,
+            language = it.language ?: options.defaultLanguage,
+            countRange = it.countModifier,
+            gender = it.genderModifier,
+            attributes = it.attributes ?: emptyMap(),
             template = BasicTranslationTemplate(
                 id = it.key,
-                source = it.value
+                source = it.template
             )
         )
     }
