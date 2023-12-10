@@ -1,6 +1,6 @@
 package net.lsafer.i18ner.internal
 
-import net.lsafer.i18ner.TranslationGender
+import net.lsafer.i18ner.Gender
 
 internal fun String.parseStatementKey(
     filename: String?,
@@ -11,7 +11,7 @@ internal fun String.parseStatementKey(
     var currentName = ""
     var currentLanguage: String? = null
 
-    var currentGenderModifier: TranslationGender? = null
+    var currentGenderModifier: Gender? = null
     var currentCountModifier: LongRange? = null
     val currentAttributes: MutableMap<String, String> = mutableMapOf()
 
@@ -39,7 +39,7 @@ internal fun String.parseStatementKey(
 
         // StatementKeyMetadataConsumer
 
-        override fun onStatementKeyMetadataGenderModifier(gender: TranslationGender) {
+        override fun onStatementKeyMetadataGenderModifier(gender: Gender) {
             currentGenderModifier = gender
         }
 

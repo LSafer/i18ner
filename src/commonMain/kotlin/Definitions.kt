@@ -31,7 +31,7 @@ value class MessageStringDefinition(
 @Serializable
 data class MessageObjectDefinition(
     val language: String? = null,
-    val gender: TranslationGender? = null,
+    val gender: Gender? = null,
     @OptIn(I18nerInternalApi::class)
     @Serializable(LongRangeStringSerializer::class)
     val count: LongRange? = null,

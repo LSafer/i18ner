@@ -30,20 +30,6 @@ data class LanguageRange(
 )
 
 /**
- * Enumeration over the possible genders to help
- * produce the best matching translation message
- * based on gender.
- */
-@Serializable
-enum class TranslationGender {
-    @SerialName("male")
-    MALE,
-
-    @SerialName("female")
-    FEMALE
-}
-
-/**
  * A function that produces a localized string from some parameters.
  */
 @Serializable
@@ -70,7 +56,7 @@ data class TranslationMessage(
     @OptIn(I18nerInternalApi::class)
     @Serializable(LongRangeArraySerializer::class)
     val countRange: LongRange? = null,
-    val gender: TranslationGender? = null,
+    val gender: Gender? = null,
     val attributes: Map<String, String> = emptyMap(),
     val template: TranslationTemplate,
 )
@@ -89,7 +75,7 @@ data class TranslationSpecifier(
     val name: String,
     val languages: List<LanguageRange> = emptyList(),
     val count: Long? = null,
-    val gender: TranslationGender? = null,
+    val gender: Gender? = null,
     val attributes: Map<String, String> = emptyMap(),
 )
 
@@ -107,7 +93,7 @@ data class MutableTranslationSpecifier(
     var name: String,
     val languages: MutableList<LanguageRange>,
     var count: Long?,
-    var gender: TranslationGender?,
+    var gender: Gender?,
     val attributes: MutableMap<String, String>,
 )
 

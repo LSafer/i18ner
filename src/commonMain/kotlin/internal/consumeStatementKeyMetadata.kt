@@ -1,10 +1,10 @@
 package net.lsafer.i18ner.internal
 
 import net.lsafer.i18ner.I18nerInternalApi
-import net.lsafer.i18ner.TranslationGender
+import net.lsafer.i18ner.Gender
 
 internal interface StatementKeyMetadataOnetimeConsumer {
-    fun onStatementKeyMetadataGenderModifier(gender: TranslationGender)
+    fun onStatementKeyMetadataGenderModifier(gender: Gender)
 
     fun onStatementKeyMetadataCountModifier(count: LongRange)
 

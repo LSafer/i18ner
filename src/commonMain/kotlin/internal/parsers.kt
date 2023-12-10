@@ -1,7 +1,7 @@
 package net.lsafer.i18ner.internal
 
+import net.lsafer.i18ner.Gender
 import net.lsafer.i18ner.I18nerInternalApi
-import net.lsafer.i18ner.TranslationGender
 
 internal val CountRangeModifierPattern = Regex(
     pattern = "^(-?infinity|-?[_0-9]*)\\.\\.(-?infinity|-?[_0-9]*)$",
@@ -59,11 +59,11 @@ fun String.parseLongRangeString(): LongRange? {
 }
 
 @I18nerInternalApi
-fun String.parseGenderModifierOrNull(): TranslationGender? {
+fun String.parseGenderModifierOrNull(): Gender? {
     return when (lowercase()) {
-        "male", "m" -> TranslationGender.MALE
+        "male", "m" -> Gender.Male
 
-        "female", "f" -> TranslationGender.FEMALE
+        "female", "f" -> Gender.Female
 
         else -> null
     }

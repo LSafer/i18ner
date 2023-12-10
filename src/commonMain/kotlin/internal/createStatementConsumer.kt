@@ -1,6 +1,6 @@
 package net.lsafer.i18ner.internal
 
-import net.lsafer.i18ner.TranslationGender
+import net.lsafer.i18ner.Gender
 
 internal fun createStatementConsumer(
     filename: String?,
@@ -16,7 +16,7 @@ internal fun createStatementConsumer(
         var currentName = ""
         var currentLanguage: String? = null
 
-        var currentGenderModifier: TranslationGender? = null
+        var currentGenderModifier: Gender? = null
         var currentCountModifier: LongRange? = null
         var currentAttributes: MutableMap<String, String> = mutableMapOf()
 
@@ -102,7 +102,7 @@ internal fun createStatementConsumer(
 
         // StatementKeyMetadataConsumer
 
-        override fun onStatementKeyMetadataGenderModifier(gender: TranslationGender) {
+        override fun onStatementKeyMetadataGenderModifier(gender: Gender) {
             currentGenderModifier = gender
         }
 

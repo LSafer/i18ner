@@ -162,7 +162,7 @@ private fun extractGenderModifier(
     key: String,
     filename: String?,
     strict: Boolean,
-): TranslationGender? {
+): Gender? {
     val value = metadata["gender"] ?: return null
 
     if (value is YamlLiteral) {
