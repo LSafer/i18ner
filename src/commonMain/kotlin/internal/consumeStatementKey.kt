@@ -1,10 +1,9 @@
 package net.lsafer.i18ner.internal
 
-private const val TAG_OPEN = '#'
-private const val METADATA_OPEN = '['
-private const val METADATA_CLOSE = ']'
-private val METADATA_SEPARATOR_CHARS = charArrayOf(',', ' ')
-private val METADATA_ASSIGNMENT_CHARS = charArrayOf('-', '=', ':')
+private val TAG_OPEN_CHARS = listOf('#')
+private val METADATA_OPEN_CLOSE_CHARS = mapOf('[' to ']', '{' to '}', '(' to ')', '<' to '>')
+private val METADATA_SEPARATOR_CHARS = charArrayOf(',', '&')
+private val METADATA_ASSIGNMENT_CHARS = charArrayOf('-', '|', '=', ':', ' ')
 
 internal interface StatementKeyOnetimeConsumer {
     fun onStatementKeyName(name: String)
@@ -45,18 +44,19 @@ internal fun String.consumeStatementKey(consumer: StatementKeyOnetimeConsumer) {
     var tagOffset = -1
     var tagConsumed = false
     var metadataOffset = -1
+    var metadataCloseChar = '\u0000'
     var metadataConsumed = false
 
     for ((i, char) in this.withIndex()) {
         when {
             metadataOffset != -1 && !metadataConsumed -> {
-                if (char == METADATA_CLOSE) {
+                if (char == metadataCloseChar) {
                     metadataConsumed = true
                     consumeMetadata(metadataOffset, i)
                 }
             }
 
-            tagOffset == -1 && char == TAG_OPEN -> {
+            tagOffset == -1 && char in TAG_OPEN_CHARS -> {
                 tagOffset = i
 
                 if (!nameConsumed) {
@@ -65,8 +65,9 @@ internal fun String.consumeStatementKey(consumer: StatementKeyOnetimeConsumer) {
                 }
             }
 
-            metadataOffset == -1 && char == METADATA_OPEN -> {
+            metadataOffset == -1 && char in METADATA_OPEN_CLOSE_CHARS -> {
                 metadataOffset = i
+                metadataCloseChar = METADATA_OPEN_CLOSE_CHARS[char]!!
 
                 if (!nameConsumed) {
                     nameConsumed = true
