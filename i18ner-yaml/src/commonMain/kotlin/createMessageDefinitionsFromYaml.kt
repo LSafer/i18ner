@@ -17,7 +17,7 @@ data class YamlMessageDefinitionsOptions(
 )
 
 fun createYamlMessageDefinitions(
-    source: String,
+    source: String = "",
     block: YamlMessageDefinitionsOptions.() -> Unit = {},
 ): Map<String, MessageDefinition> {
     val options = YamlMessageDefinitionsOptions()
