@@ -33,7 +33,7 @@ enum class LanguageDirection {
 }
 
 fun directionOfLanguage(language: String): LanguageDirection {
-    return when (language) {
+    return when (language.substringBefore('-')) {
         "ae", /* Avestan */
         "ar", /* 'العربية', Arabic */
         "arc",  /* Aramaic */
