@@ -30,7 +30,7 @@ internal fun String.consumeStatementKey(consumer: StatementKeyOnetimeConsumer) {
         val metadata = substring(offset + 1, terminal)
             .splitToSequence(*METADATA_SEPARATOR_CHARS)
             .filter { it.isNotBlank() }
-            .map { it.split(*METADATA_ASSIGNMENT_CHARS, limit = 2) }
+            .map { it.trim().split(*METADATA_ASSIGNMENT_CHARS, limit = 2) }
             .associate { splits ->
                 val k = splits[0]
                 val v = splits.getOrNull(1)
