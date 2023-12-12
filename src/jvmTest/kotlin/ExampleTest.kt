@@ -25,14 +25,14 @@ class ExampleTest {
         }
 
         val AR_SA_M_OSAMA = i18ner.t("welcome", "name" to "Osama") {
-            languages += LanguageRange("ar-SA")
+            languages += "ar-SA"
             gender = Male
         }
 
         assertEquals("AR SA M Osama", AR_SA_M_OSAMA)
 
         val AR_SA_F_FATIMA = i18ner.t("welcome", "name" to "Fatima") {
-            languages += LanguageRange("ar-SA")
+            languages += "ar-SA"
             gender = Female
         }
 

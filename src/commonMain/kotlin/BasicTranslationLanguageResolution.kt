@@ -29,16 +29,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("basic")
 data object BasicTranslationLanguageResolution : TranslationLanguageResolution {
-    override fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String? {
+    override fun invoke(ranges: List<String>, languages: Set<String>): String? {
         if (ranges.isEmpty() || languages.isEmpty())
             return null
 
-        for (range in ranges.asSequence().sortedBy { it.weight }) {
+        for (range in ranges) {
             // Special language range ("*") is ignored in lookup.
-            if (range.language == "*")
+            if (range == "*")
                 continue
 
-            var normalRangeLanguage = range.language.lowercase()
+            var normalRangeLanguage = range.lowercase()
 
             while (normalRangeLanguage.isNotEmpty()) {
                 val regex = normalRangeLanguage

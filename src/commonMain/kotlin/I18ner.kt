@@ -40,7 +40,7 @@ interface I18ner {
     /**
      * The default (fallback) languages.
      */
-    val defaultLanguages: MutableList<LanguageRange>
+    val defaultLanguages: MutableList<String>
 
     /**
      * The templating engines to be used.

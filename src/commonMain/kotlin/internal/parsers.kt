@@ -19,7 +19,7 @@ internal fun LongRange.formatLongRangeString(): String {
         }
 
         if (first != last) {
-            append("...")
+            append("..")
 
             when (last) {
                 Long.MIN_VALUE -> append("-infinity")

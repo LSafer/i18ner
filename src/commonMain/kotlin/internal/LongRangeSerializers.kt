@@ -3,7 +3,6 @@ package net.lsafer.i18ner.internal
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.LongArraySerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -12,14 +11,18 @@ import kotlinx.serialization.encoding.Encoder
 import net.lsafer.i18ner.I18nerInternalApi
 
 @I18nerInternalApi
-class LongRangeArraySerializer : KSerializer<LongRange> {
+object LongRangeArraySerializer : KSerializer<LongRange> {
     private val longArraySerializer = LongArraySerializer()
 
     @OptIn(ExperimentalSerializationApi::class)
-    override val descriptor: SerialDescriptor = SerialDescriptor("LongRange", longArraySerializer.descriptor)
+    override val descriptor = SerialDescriptor(
+        serialName = "kotlin.ranges.LongRange",
+        original = longArraySerializer.descriptor
+    )
 
     override fun serialize(encoder: Encoder, value: LongRange) {
-        encoder.encodeSerializableValue(longArraySerializer, longArrayOf(value.first, value.last))
+        val array = longArrayOf(value.first, value.last)
+        encoder.encodeSerializableValue(longArraySerializer, array)
     }
 
     override fun deserialize(decoder: Decoder): LongRange {
@@ -30,18 +33,19 @@ class LongRangeArraySerializer : KSerializer<LongRange> {
 }
 
 @I18nerInternalApi
-class LongRangeStringSerializer : KSerializer<LongRange> {
-    private val stringSerializer = String.serializer()
-
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LongRange", PrimitiveKind.LONG)
+object LongRangeStringSerializer : KSerializer<LongRange> {
+    override val descriptor = PrimitiveSerialDescriptor(
+        serialName = "kotlin.ranges.LongRange",
+        kind = PrimitiveKind.STRING
+    )
 
     override fun serialize(encoder: Encoder, value: LongRange) {
         val string = value.formatLongRangeString()
-        encoder.encodeSerializableValue(stringSerializer, string)
+        encoder.encodeString(string)
     }
 
     override fun deserialize(decoder: Decoder): LongRange {
-        val string = decoder.decodeSerializableValue(stringSerializer)
+        val string = decoder.decodeString()
         val value = string.parseLongRangeString()
         require(value != null) { "Invalid LongRange representation" }
         return value

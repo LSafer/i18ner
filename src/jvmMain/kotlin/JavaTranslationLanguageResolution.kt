@@ -18,23 +18,8 @@ package net.lsafer.i18ner
 import java.util.*
 
 object JavaTranslationLanguageResolution : TranslationLanguageResolution {
-    override fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String? {
-        val rangesJava = ranges.map { Locale.LanguageRange(it.language, it.weight) }
+    override fun invoke(ranges: List<String>, languages: Set<String>): String? {
+        val rangesJava = ranges.map { Locale.LanguageRange(it) }
         return Locale.lookupTag(rangesJava, languages)
     }
-}
-
-fun main() {
-    val ranges = listOf(
-        LanguageRange("ar"),
-    )
-    val languages = setOf(
-        "ar-SA",
-        "en-US",
-        "en"
-    )
-
-    val out = JavaTranslationLanguageResolution(ranges, languages)
-
-    println(out)
 }

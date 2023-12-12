@@ -15,19 +15,8 @@
  */
 package net.lsafer.i18ner
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.lsafer.i18ner.internal.LongRangeArraySerializer
-
-/**
- * A language range is an identifier which is used to
- * select language tag(s) meeting specific requirements.
- */
-@Serializable
-data class LanguageRange(
-    val language: String,
-    val weight: Double = 1.0,
-)
 
 /**
  * A function that produces a localized string from some parameters.
@@ -73,7 +62,7 @@ data class TranslationMessage(
 @Serializable
 data class TranslationSpecifier(
     val name: String,
-    val languages: List<LanguageRange> = emptyList(),
+    val languages: List<String> = emptyList(),
     val count: Long? = null,
     val gender: Gender? = null,
     val attributes: Map<String, String> = emptyMap(),
@@ -91,7 +80,7 @@ data class TranslationSpecifier(
 @Serializable
 data class MutableTranslationSpecifier(
     var name: String,
-    val languages: MutableList<LanguageRange>,
+    val languages: MutableList<String>,
     var count: Long?,
     var gender: Gender?,
     val attributes: MutableMap<String, String>,
@@ -102,7 +91,7 @@ data class MutableTranslationSpecifier(
  * from a set of languages given some language ranges.
  */
 fun interface TranslationLanguageResolution {
-    operator fun invoke(ranges: List<LanguageRange>, languages: Set<String>): String?
+    operator fun invoke(ranges: List<String>, languages: Set<String>): String?
 }
 
 /**
