@@ -33,6 +33,7 @@ internal class I18nerImpl : I18ner {
         val choices = messages.asSequence()
             .filter { it.gender == null || specifier.gender == it.gender }
             .filter { it.countRange == null || specifier.count in it.countRange }
+            .filter { it.attributes.all { (k, v) -> v == specifier.attributes[k] } }
             .groupBy { it.language }
 
         if (choices.isEmpty())
@@ -55,21 +56,11 @@ internal class I18nerImpl : I18ner {
         val filtered = choices[choice] ?: choices.values.first()
 
         return filtered.maxBy {
-            var score = 0
+            var score = it.attributes.size
+            score -= score - specifier.attributes.size
 
             if (it.countRange != null) score++
             if (it.gender != null) score++
-
-            for (k in it.attributes.keys + specifier.attributes.keys) {
-                val v0 = it.attributes[k]
-                val v1 = specifier.attributes[k]
-
-                when {
-                    v0 == v1 -> score++
-                    v0 == null || v1 == null -> continue
-                    else -> score--
-                }
-            }
 
             score
         }

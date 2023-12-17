@@ -37,6 +37,12 @@ class ExampleTest {
         }
 
         assertEquals("AR SA F Fatima", AR_SA_F_FATIMA)
+
+        val NO_GENDER = i18ner.tn("welcome", "name" to "Fatima") {
+            languages += "ar-SA"
+        }
+
+        assertEquals(null, NO_GENDER)
     }
 
     @Test
