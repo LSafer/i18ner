@@ -15,41 +15,74 @@
  */
 package net.lsafer.i18ner
 
-// I18ner.tmn(map, specifier)
+// I18ner.tmpn(map, specifier)
 
 /**
  * Return the translation for the given [specifier]
  * from the given [map] with the given arguments.
  */
-fun <T> I18ner.tmn(
+fun <T> I18ner.tmpn(
     map: Map<String, T>,
     specifier: LocalizationSpecifier,
-): T? {
-    return tmpn(map, specifier)?.second
+): Pair<String, T>? {
+    val choices = mutableMapOf<String?, T>()
+
+    for ((itk, itv) in map) {
+        val itkSplits = itk.split("#", limit = 2)
+        val itn = itkSplits.first()
+        val itt = itkSplits.getOrNull(1)
+
+        if (itn != specifier.name)
+            continue
+
+        choices[itt] = itv
+    }
+
+    if (choices.isEmpty())
+        return null
+
+    val choicesLanguages = choices.keys.filterNotNullTo(mutableSetOf())
+
+    var choice = languageResolution(
+        ranges = specifier.languages,
+        languages = choicesLanguages
+    )
+
+    if (choice == null) {
+        choice = languageResolution(
+            ranges = defaultLanguages,
+            languages = choicesLanguages
+        )
+    }
+
+    val chosen = choices.entries.firstOrNull { it.key == choice }
+        ?: choices.entries.first()
+
+    return chosen.key.orEmpty() to chosen.value
 }
 
 /**
  * Return the translation for the given [specifier]
  * from the given [map] with the given arguments.
  */
-fun <T> tmn(
-    map: Map<String, T>,
+fun <T> tmpn(
+    source: Map<String, T>,
     specifier: LocalizationSpecifier,
-): T? {
-    return I18ner.tmpn(map, specifier)?.second
+): Pair<String, T>? {
+    return I18ner.tmpn(source, specifier)
 }
 
-// I18ner.tmn(map, name, block)
+// I18ner.tmpn(map, name, block)
 
 /**
  * Return the translation for the given [name]
  * from the given [map] with the given arguments.
  */
-fun <T> I18ner.tmn(
-    map: Map<String, T>,
+fun <T> I18ner.tmpn(
+    source: Map<String, T>,
     name: String,
     block: (LocalizationSpecifier).() -> Unit = {},
-): T? {
+): Pair<String, T>? {
     val specifier = LocalizationSpecifier(
         name = name,
         languages = mutableListOf(),
@@ -57,17 +90,17 @@ fun <T> I18ner.tmn(
 
     specifier.apply(block)
 
-    return tmpn(map, specifier)?.second
+    return tmpn(source, specifier)
 }
 
 /**
  * Return the translation for the given [name]
  * from the given [map] with the given arguments.
  */
-fun <T> tmn(
-    map: Map<String, T>,
+fun <T> tmpn(
+    source: Map<String, T>,
     name: String,
     block: (LocalizationSpecifier).() -> Unit = {},
-): T? {
-    return I18ner.tmpn(map, name, block)?.second
+): Pair<String, T>? {
+    return I18ner.tmpn(source, name, block)
 }
