@@ -51,7 +51,7 @@ fun I18ner.tObjects(
     name: String,
     parameters: Map<String, Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, parameters, block) ?: default
 }
@@ -64,7 +64,7 @@ fun tObjects(
     name: String,
     parameters: Map<String, Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, parameters, block) ?: default
 }
@@ -79,7 +79,7 @@ fun I18ner.tObjects(
     name: String,
     parameters: List<Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, parameters, block) ?: default
 }
@@ -92,7 +92,7 @@ fun tObjects(
     name: String,
     parameters: List<Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, parameters, block) ?: default
 }
@@ -108,7 +108,7 @@ fun I18ner.tObjects(
     @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, block) ?: default
 }
@@ -122,7 +122,7 @@ fun tObjects(
     @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, block) ?: default
 }
@@ -137,7 +137,7 @@ fun I18ner.tObjects(
     name: String,
     vararg parameters: Pair<String, Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, *parameters, block = block) ?: default
 }
@@ -150,7 +150,7 @@ fun tObjects(
     name: String,
     vararg parameters: Pair<String, Any?>,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, *parameters, block = block) ?: default
 }
@@ -165,7 +165,7 @@ fun I18ner.tObjects(
     name: String,
     vararg parameters: Any?,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, *parameters, block = block) ?: default
 }
@@ -178,7 +178,7 @@ fun tObjects(
     name: String,
     vararg parameters: Any?,
     default: List<Any?> = listOf(name),
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): List<Any?> {
     return tnObjects(name, *parameters, block = block) ?: default
 }

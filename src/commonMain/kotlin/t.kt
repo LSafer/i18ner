@@ -51,7 +51,7 @@ fun I18ner.t(
     name: String,
     parameters: Map<String, Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, parameters, block) ?: default
 }
@@ -64,7 +64,7 @@ fun t(
     name: String,
     parameters: Map<String, Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, parameters, block) ?: default
 }
@@ -79,7 +79,7 @@ fun I18ner.t(
     name: String,
     parameters: List<Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, parameters, block) ?: default
 }
@@ -92,7 +92,7 @@ fun t(
     name: String,
     parameters: List<Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, parameters, block) ?: default
 }
@@ -108,7 +108,7 @@ fun I18ner.t(
     @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, block) ?: default
 }
@@ -122,7 +122,7 @@ fun t(
     @Suppress("UNUSED_PARAMETER")
     dummy: Unit = Unit,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, block) ?: default
 }
@@ -137,7 +137,7 @@ fun I18ner.t(
     name: String,
     vararg parameters: Pair<String, Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, *parameters, block = block) ?: default
 }
@@ -150,7 +150,7 @@ fun t(
     name: String,
     vararg parameters: Pair<String, Any?>,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, *parameters, block = block) ?: default
 }
@@ -165,7 +165,7 @@ fun I18ner.t(
     name: String,
     vararg parameters: Any?,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, *parameters, block = block) ?: default
 }
@@ -178,7 +178,7 @@ fun t(
     name: String,
     vararg parameters: Any?,
     default: String = name,
-    block: (MutableTranslationSpecifier).() -> Unit = {},
+    block: (TranslationSpecifier).() -> Unit = {},
 ): String {
     return tn(name, *parameters, block = block) ?: default
 }
