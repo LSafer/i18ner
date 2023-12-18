@@ -15,7 +15,7 @@
  */
 package net.lsafer.i18ner
 
-fun <T> Map<String, T>.translationsOf(name: String): Map<String?, T> {
+fun <T> Map<String, T>.translationsOf(name: String): Map<String, T> {
     return buildMap {
         for ((itk, itv) in this@translationsOf) {
             val itkSplits = itk.split("#", limit = 2)
@@ -25,7 +25,7 @@ fun <T> Map<String, T>.translationsOf(name: String): Map<String?, T> {
             if (itn != name)
                 continue
 
-            put(itt, itv)
+            put(itt.orEmpty(), itv)
         }
     }
 }
