@@ -72,7 +72,7 @@ fun <T> tmpn(
     return I18ner.tmpn(source, specifier)
 }
 
-// I18ner.tmpn(map, name, block)
+// I18ner.tmpn(map, name, languages[], block)
 
 /**
  * Return the translation for the given [name]
@@ -81,11 +81,12 @@ fun <T> tmpn(
 fun <T> I18ner.tmpn(
     source: Map<String, T>,
     name: String,
+    languages: List<String>,
     block: (LocalizationSpecifier).() -> Unit = {},
 ): Pair<String, T>? {
     val specifier = LocalizationSpecifier(
         name = name,
-        languages = mutableListOf(),
+        languages = languages.toMutableList(),
     )
 
     specifier.apply(block)
@@ -100,7 +101,36 @@ fun <T> I18ner.tmpn(
 fun <T> tmpn(
     source: Map<String, T>,
     name: String,
+    languages: List<String>,
     block: (LocalizationSpecifier).() -> Unit = {},
 ): Pair<String, T>? {
-    return I18ner.tmpn(source, name, block)
+    return I18ner.tmpn(source, name, languages, block)
+}
+
+// I18ner.tmpn(map, name, ...languages[], block)
+
+/**
+ * Return the translation for the given [name]
+ * from the given [map] with the given arguments.
+ */
+fun <T> I18ner.tmpn(
+    source: Map<String, T>,
+    name: String,
+    vararg languages: String,
+    block: (LocalizationSpecifier).() -> Unit = {},
+): Pair<String, T>? {
+    return tmpn(source, name, languages.asList(), block)
+}
+
+/**
+ * Return the translation for the given [name]
+ * from the given [map] with the given arguments.
+ */
+fun <T> tmpn(
+    source: Map<String, T>,
+    name: String,
+    vararg languages: String,
+    block: (LocalizationSpecifier).() -> Unit = {},
+): Pair<String, T>? {
+    return I18ner.tmpn(source, name, *languages, block = block)
 }
