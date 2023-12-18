@@ -62,13 +62,22 @@ data class TranslationMessage(
 @Serializable
 data class TranslationSpecifier(
     var name: String,
-    val languages: List<String> = emptyList(),
+    val languages: MutableList<String> = mutableListOf(),
     var count: Long? = null,
     var gender: Gender? = null,
-    val attributes: Map<String, String> = emptyMap(),
+    val attributes: MutableMap<String, String> = mutableMapOf(),
 )
 
+/**
+ * The necessary data for selecting a localized entry.
+ *
+ * @param name the target entry name (identifier)
+ * @param languages the preferred language ranges of the entry.
+ */
 @Serializable
+data class LocalizationSpecifier(
+    val name: String,
+    val languages: MutableList<String> = mutableListOf(),
 )
 
 /**
