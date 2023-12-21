@@ -35,6 +35,10 @@ data class I18nerMessageDefinitionsOptions(
     var filename: String? = null,
 )
 
+/**
+ * Transform the given message definitions into
+ * translation messages.
+ */
 fun i18nerMessageDefinitions(
     element: Map<String, MessageDefinition> = emptyMap(),
     block: I18nerMessageDefinitionsOptions.() -> Unit,
@@ -45,6 +49,10 @@ fun i18nerMessageDefinitions(
     return i18nerMessageDefinitions(configuration)
 }
 
+/**
+ * Transform the given message definitions into
+ * translation messages.
+ */
 fun i18nerMessageDefinitions(
     options: I18nerMessageDefinitionsOptions,
 ): List<TranslationMessage> {

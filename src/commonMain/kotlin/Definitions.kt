@@ -19,15 +19,24 @@ import kotlinx.serialization.Serializable
 import net.lsafer.i18ner.internal.LongRangeStringSerializer
 import kotlin.jvm.JvmInline
 
+/**
+ * A definition of a translation message.
+ */
 @Serializable
 sealed interface MessageDefinition
 
+/**
+ * A definition of a translation message string.
+ */
 @JvmInline
 @Serializable
 value class MessageStringDefinition(
     val template: String,
 ) : MessageDefinition
 
+/**
+ * A definition of a translation message object.
+ */
 @Serializable
 data class MessageObjectDefinition(
     val language: String? = null,

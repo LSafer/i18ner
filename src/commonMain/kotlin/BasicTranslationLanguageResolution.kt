@@ -21,8 +21,6 @@ import kotlinx.serialization.Serializable
 /**
  * A basic implementation of [TranslationLanguageResolution].
  *
- * TODO behaviour specification
- *
  * @author LSafer
  * @since 1.0.0
  */

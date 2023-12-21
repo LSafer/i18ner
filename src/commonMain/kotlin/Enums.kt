@@ -32,6 +32,9 @@ enum class LanguageDirection {
     LeftToRight, RightToLeft
 }
 
+/**
+ * Return the direction of the given [language].
+ */
 fun directionOfLanguage(language: String): LanguageDirection {
     return when (language.substringBefore('-')) {
         "ae", /* Avestan */

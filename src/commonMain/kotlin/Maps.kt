@@ -15,6 +15,14 @@
  */
 package net.lsafer.i18ner
 
+/**
+ * Return a language-tag/element pairs map containing
+ * the translations of fields with the given [name].
+ *
+ * Translations of some field are the fields that has
+ * the same name as it with a suffix that starts
+ * with `#` then the translation language.
+ */
 fun <T> Map<String, T>.translationsOf(name: String): Map<String, T> {
     return buildMap {
         for ((itk, itv) in this@translationsOf) {

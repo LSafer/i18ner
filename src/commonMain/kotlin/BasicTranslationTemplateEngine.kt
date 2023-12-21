@@ -18,7 +18,7 @@ package net.lsafer.i18ner
 /**
  * A basic implementation of [TranslationTemplate].
  *
- * TODO syntax specification
+ * Parameters are all required with the given injection syntax: `{parameter_name}`
  *
  * @author LSafer
  * @since 1.0.0
