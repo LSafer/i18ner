@@ -1,6 +1,25 @@
-# I18ner
+# I18ner [![](https://jitpack.io/v/net.lsafer/i18ner.svg)](https://jitpack.io/#net.lsafer/i18ner)
 
 Basic I18n library with no code generation or automatic translations' population.
+
+### Install
+
+The main way of installing this library is
+using `jitpack.io`
+
+```kts
+repositories {
+    // ...
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    // Replace TAG with the desired version
+    implementation("net.lsafer.i18ner:i18ner:TAG")
+    implementation("net.lsafer.i18ner:i18ner-yaml:TAG") // optional
+}
+```
 
 ### Localization File Example
 
@@ -22,6 +41,7 @@ my_message_name_3=Oops, {first_person} just called {second_person} by mistake!
 ```
 
 Or if you like yaml:
+
 ```yaml
 # Girl messages
 my_message_name#en-US(F, 0): "There is no girls here. No one to ask about {0}!"
